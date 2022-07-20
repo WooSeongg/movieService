@@ -19,10 +19,10 @@ class DetailViewController: UIViewController {
         // Do any additional setup after loading the view.
         //nameLable.text = movieName
         //navigationItem.title = movieName
-        
-        let urlKorString = "https://search.naver.com/search.naver?&query="+movieName
-        let urlString = urlKorString.addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed)!
-        //let urlString = "https://m.cgv.co.kr/WebApp/Reservation/schedule.aspx?tc=&ymd=&src="
+        /*
+        let urlKorString = "https://search.naver.com/search.naver?where=nexearch&sm=top_hty&fbm=1&ie=utf8&query="+movieName
+        let urlString = urlKorString.addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed)!*/
+        let urlString = "https://m.cgv.co.kr/WebApp/Reservation/schedule.aspx?tc=&ymd=&src="
         guard let url = URL(string: urlString) else { return }
         
         let request = URLRequest(url:url)

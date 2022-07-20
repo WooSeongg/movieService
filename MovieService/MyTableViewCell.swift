@@ -10,10 +10,11 @@ import UIKit
 class MyTableViewCell: UITableViewCell {
     
     
-    @IBOutlet weak var userRating: UILabel!
+    
+    
     @IBOutlet weak var mainFilter: UIView!
     @IBOutlet weak var bottomView: UIView!
-    @IBOutlet weak var level: UILabel!
+    @IBOutlet weak var rank: UILabel!
     @IBOutlet weak var mainImg: UIImageView!
     @IBOutlet weak var movieDate: UILabel!
     @IBOutlet weak var movieName: UILabel!

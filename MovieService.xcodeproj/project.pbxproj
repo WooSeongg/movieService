@@ -7,7 +7,6 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		9A1DB40C28505013001658D5 /* MapViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A1DB40B28505013001658D5 /* MapViewController.swift */; };
 		9A8282B6283DBCA1002A973A /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A8282B5283DBCA1002A973A /* AppDelegate.swift */; };
 		9A8282B8283DBCA1002A973A /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A8282B7283DBCA1002A973A /* SceneDelegate.swift */; };
 		9A8282BA283DBCA1002A973A /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A8282B9283DBCA1002A973A /* ViewController.swift */; };
@@ -43,7 +42,6 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
-		9A1DB40B28505013001658D5 /* MapViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MapViewController.swift; sourceTree = "<group>"; };
 		9A8282B2283DBCA1002A973A /* MovieService.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = MovieService.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		9A8282B5283DBCA1002A973A /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		9A8282B7283DBCA1002A973A /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -129,7 +127,6 @@
 				9A989DC4284791DC00A376C2 /* MyCollectionViewCell.swift */,
 				9A989DC92847971500A376C2 /* MainTableViewController.swift */,
 				9A989DCE2847972B00A376C2 /* MainTableViewCell.swift */,
-				9A1DB40B28505013001658D5 /* MapViewController.swift */,
 			);
 			path = MovieService;
 			sourceTree = "<group>";
@@ -282,7 +279,6 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				9A1DB40C28505013001658D5 /* MapViewController.swift in Sources */,
 				9A8282BA283DBCA1002A973A /* ViewController.swift in Sources */,
 				9A8282EC283DC266002A973A /* MyTableViewCell.swift in Sources */,
 				9A989DC5284791DC00A376C2 /* MyCollectionViewCell.swift in Sources */,
