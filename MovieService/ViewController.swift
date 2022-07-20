@@ -1,0 +1,157 @@
+//
+//  ViewController.swift
+//  MovieCWS
+//
+//  Created by 미미밍 on 2022/05/25.
+//
+
+import UIKit
+
+class ViewController: UIViewController, UITableViewDelegate , UITableViewDataSource {
+    
+    @IBOutlet weak var table: UITableView!
+    
+    var movieURL = "https://kobis.or.kr/kobisopenapi/webservice/rest/boxoffice/searchDailyBoxOfficeList.json?key=87741d73ccc1be83b6769245ea6e0aa1&targetDt="
+    var movieData : MovieData?
+    
+    struct MovieData : Codable {
+        let  boxOfficeResult : BoxOfficeResult
+    }
+    struct  BoxOfficeResult : Codable {
+        let  dailyBoxOfficeList : [DailyBoxOfficeList]
+    }
+    struct  DailyBoxOfficeList : Codable {
+        let movieNm : String
+        let audiCnt : String
+        let audiAcc : String
+        let rank : String
+    }
+   
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        
+        return 10
+    }
+    
+    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        let cell = tableView.dequeueReusableCell(withIdentifier: "myCell", for: indexPath) as! MyTableViewCell
+        let movieName = movieData?.boxOfficeResult.dailyBoxOfficeList[indexPath.row].movieNm
+        cell.movieName.text = movieName
+        //cell.movieDate.text = movieData?.boxOfficeResult.dailyBoxOfficeList[indexPath.row].audiCnt
+        let numberFormatter = NumberFormatter()
+        numberFormatter.numberStyle = .decimal
+        
+        if let a = movieData?.boxOfficeResult.dailyBoxOfficeList[indexPath.row].audiAcc{
+            cell.audiAccumulate.text = numberFormatter.string(for: Int(a))
+        }else{
+            cell.audiAccumulate.text = "0"
+        }
+                
+        if let a = movieData?.boxOfficeResult.dailyBoxOfficeList[indexPath.row].audiCnt{
+            cell.movieDate.text = numberFormatter.string(for: Int(a))
+        }else{
+            cell.audiAccumulate.text = "0"
+        }
+        
+
+        cell.level.text = String(indexPath.row + 1) + "위"
+        cell.level.clipsToBounds = true
+        cell.level.layer.cornerRadius = 15
+        //cell.layer.cornerRadius = 15
+        
+        //main이미지 좌,우 상단에만 radius 18
+        cell.mainImg.layer.cornerRadius = 18
+        cell.mainImg.layer.maskedCorners = CACornerMask(arrayLiteral: .layerMinXMinYCorner, .layerMaxXMinYCorner)
+        cell.mainFilter.layer.cornerRadius = 18
+        cell.mainFilter.layer.maskedCorners = CACornerMask(arrayLiteral: .layerMinXMinYCorner, .layerMaxXMinYCorner)
+        
+        //cell 좌,우 하단에만 radius 18
+        cell.bottomView.layer.cornerRadius = 18
+        cell.bottomView.layer.maskedCorners = CACornerMask(arrayLiteral: .layerMaxXMaxYCorner, .layerMinXMaxYCorner)
+        cell.bottomView.layer.borderColor = UIColor.gray.cgColor
+        cell.bottomView.layer.borderWidth = 0.5
+
+        
+        if let ss = movieName{
+            cell.posterImg.image = UIImage(named: ss)
+            cell.mainImg.image = UIImage(named: ss+"-1")
+        }else{
+            print("no Img")
+        }
+        
+        return cell
+    }
+    
+    func numberOfSections(in tableView: UITableView) -> Int {
+        return 1
+    }
+    
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        print(indexPath.description)
+    }
+    
+    func getData(){
+        guard let url = URL(string: movieURL)else {return}
+        let session = URLSession(configuration: .default)
+        let task = session.dataTask(with: url) { (data, response, error) in
+            if error != nil{
+                print(error!)
+                return
+            }
+            guard let JSONdata = data else { return }
+            
+            //print(JSONdata)
+            //print(response!)
+            //let dataString = String(data: JSONdata, encoding: .utf8)
+            //print(dataString!)
+            let decoder = JSONDecoder() //JSON데이터를 디코드하기 위해 JOSNDecoder객체생성
+            do {
+                let decodedData = try decoder.decode(MovieData.self, from: JSONdata) //.self:String.metatype임을 명시
+
+                self.movieData = decodedData
+                DispatchQueue.main.async {
+                    self.table.reloadData()
+                }
+                
+            }catch {
+                print("MovieData Error")
+                print(error)
+            }
+            
+        }
+        task.resume()
+        
+    }
+    
+  
+    
+    func makeYesterdayString() -> String {
+        let y = Calendar.current.date(byAdding: .day, value: -1, to: Date())!
+        let dateF = DateFormatter()
+        dateF.dateFormat = "yyyMMdd"
+        let day = dateF.string(from:y)
+        return day
+    }
+    
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        guard let dest = segue.destination as? DetailViewController else {return}
+        let myIndexPath = table.indexPathForSelectedRow!
+        let row = myIndexPath.row
+        dest.movieName = (movieData?.boxOfficeResult.dailyBoxOfficeList[row].movieNm)!
+    }
+    
+    
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        table.delegate  = self
+        table.dataSource = self
+        
+        self.movieURL += makeYesterdayString()
+        
+        self.getData()
+        
+        // Do any additional setup after loading the view.
+    }
+
+
+}
+
