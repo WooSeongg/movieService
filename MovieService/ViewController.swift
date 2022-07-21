@@ -89,9 +89,14 @@ class ViewController: UIViewController, UITableViewDelegate , UITableViewDataSou
         if let ss = movieName, let urlString = movieImgURL{
             //cell.posterImg.image = UIImage(named: ss) //프로젝트 이미지 사용
             let url = URL(string:urlString)
-            let data = try? Data(contentsOf: url!)
-            cell.posterImg.image = UIImage(data:data!)
-            cell.mainImg.image = UIImage(named: ss+"-1")
+            DispatchQueue.global().async{
+                let data = try? Data(contentsOf: url!)
+                DispatchQueue.main.async{
+                    cell.posterImg.image = UIImage(data:data!)
+                    cell.mainImg.image = UIImage(named: ss+"-1")
+                }
+            }
+            
             print("yes Img")
         }else{
             print("no Img")
