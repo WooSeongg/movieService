@@ -88,14 +88,23 @@ class ViewController: UIViewController, UITableViewDelegate , UITableViewDataSou
         
         if let ss = movieName, let urlString = movieImgURL{
             //cell.posterImg.image = UIImage(named: ss) //프로젝트 이미지 사용
+            let cacheKey = NSString(string:urlString)
             let url = URL(string:urlString)
-            DispatchQueue.global().async{
-                let data = try? Data(contentsOf: url!)
-                DispatchQueue.main.async{
-                    cell.posterImg.image = UIImage(data:data!)
-                    cell.mainImg.image = UIImage(named: ss+"-1")
+            if let cacaheImage = ImageCacheManager.shared.object(forKey: cacheKey){//저장된 이미지가 있다면
+                cell.posterImg.image = cacaheImage
+                
+            }else{
+                DispatchQueue.global().async{
+                    let data = try? Data(contentsOf: url!)
+                    DispatchQueue.main.async{
+                        let image = UIImage(data:data!)
+                        cell.posterImg.image = image
+                        ImageCacheManager.shared.setObject(image!, forKey: cacheKey)//네트워크로 불러온 이미지 캐싱
+                        cell.mainImg.image = UIImage(named: ss+"-1")
+                    }
                 }
             }
+            
             
             print("yes Img")
         }else{
@@ -216,9 +225,16 @@ class ViewController: UIViewController, UITableViewDelegate , UITableViewDataSou
         table.delegate  = self
         table.dataSource = self
         
-        self.movieURL += makeYesterdayString() //api오류로 임시 주석처리
+        self.movieURL += makeYesterdayString()
         self.getData()
         
+    }
+    
+    class ImageCacheManager {
+        
+        static let shared = NSCache<NSString, UIImage>()
+        
+        private init() {}
     }
 
 
