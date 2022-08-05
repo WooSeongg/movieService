@@ -17,12 +17,10 @@ class DetailViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        //let urlKorString = "https://search.naver.com/search.naver?where=nexearch&sm=top_hty&fbm=1&ie=utf8&query="+movieName
-        //let urlString = urlKorString.addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed)!
+        let urlKorString = "https://search.naver.com/search.naver?where=nexearch&sm=top_hty&fbm=1&ie=utf8&query="+movieName
+        let urlString = urlKorString.addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed)!
         
-        
-        let urlString = "https:m.cgv.co.kr/WebApp/Reservation/schedule.aspx?tc=&ymd=&src="
-        
+        //let urlString = "https:m.cgv.co.kr/WebApp/Reservation/schedule.aspx?tc=&ymd=&src="
         
         guard let url = URL(string: urlString) else { return }
         

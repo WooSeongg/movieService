@@ -26,6 +26,7 @@ class ViewController: UIViewController, UITableViewDelegate , UITableViewDataSou
         let audiCnt : String
         let audiAcc : String
         let rank : String
+        let openDt: String
     }
     
     let naverMovieURL = "https://openapi.naver.com/v1/search/movie.json?query="
@@ -206,7 +207,7 @@ class ViewController: UIViewController, UITableViewDelegate , UITableViewDataSou
                 
                 for (arr) in decodedData.boxOfficeResult.dailyBoxOfficeList{
                     DispatchQueue.global().sync{
-                        self.getNaverMovieData(stringURL: self.naverMovieURL+arr.movieNm)
+                        self.getNaverMovieData(stringURL: self.naverMovieURL+arr.movieNm ,openDt:arr.openDt)
                         self.getNaverImgData(movieName: arr.movieNm)
                     }
                 }
@@ -224,14 +225,20 @@ class ViewController: UIViewController, UITableViewDelegate , UITableViewDataSou
     }
     
     //포스터 이미지 불러오기
-    func getNaverMovieData(stringURL:String){
+    func getNaverMovieData(stringURL:String, openDt:String){
         
         let semaphore = DispatchSemaphore(value: 0)
         
-        //let year = "&yearfrom="+String(datePicker.date.get(.year)-3)+"&yearto="+String(datePicker.date.get(.year))
+        //영화 개봉년도
+        let openYear = openDt.prefix(4)
+        
+        //네이버 영화검색 요청 url
         let urlString = stringURL.addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed)!
-        guard let url = URL(string: urlString) else {return}
+        
+        //영화 목록은 제작년도를 기준으로 내림차순으로 검색되므로 openYear까지만 조건을 걸어도 원하는 영화를 찾을 수 있다
+        guard let url = URL(string: urlString+"&yearfrom=2005"+"&yearto="+openYear) else {return}
         var request = URLRequest(url:url)
+        
         //헤더에 개인키 추가
         request.addValue("VpUcm2Ecojr_b1juJZ64", forHTTPHeaderField: "X-Naver-Client-Id")
         request.addValue("dAtQLI07Pa", forHTTPHeaderField: "X-Naver-Client-Secret")
@@ -273,7 +280,7 @@ class ViewController: UIViewController, UITableViewDelegate , UITableViewDataSou
         
         let semaphore = DispatchSemaphore(value: 0)
         
-        let urlString = (naverImgURL+movieName+"&display=1&filter=large").addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed)!
+        let urlString = (naverImgURL+movieName+"영화&display=1&filter=large").addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed)!
         guard let url = URL(string: urlString)else {return}
         var request = URLRequest(url:url)
         //헤더에 개인키 추가
@@ -316,7 +323,6 @@ class ViewController: UIViewController, UITableViewDelegate , UITableViewDataSou
         let dateF = DateFormatter()
         dateF.dateFormat = "yyyMMdd"
         let day = dateF.string(from:y)
-        print("day:\(day)")
         return day
     }
     
@@ -364,4 +370,9 @@ class ViewController: UIViewController, UITableViewDelegate , UITableViewDataSou
     
 }
 
+extension Date{
+    func get(_ components:Calendar.Component, calendar:Calendar=Calendar.current) -> Int{
+        return calendar.component(components, from: self)
+    }
+}
 
