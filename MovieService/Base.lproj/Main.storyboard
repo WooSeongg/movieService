@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="17156" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="jKT-cG-y1I">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="17156" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="UBn-yX-6p8">
     <device id="retina6_1" orientation="portrait" appearance="light"/>
     <dependencies>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="17125"/>
@@ -29,7 +29,7 @@
                                 </connections>
                             </datePicker>
                             <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="none" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="NDK-Sx-Aie">
-                                <rect key="frame" x="0.0" y="133" width="414" height="729"/>
+                                <rect key="frame" x="0.0" y="133" width="414" height="680"/>
                                 <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                                 <prototypes>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" reuseIdentifier="myCell" rowHeight="331" id="f84-nm-Jt7" customClass="MyTableViewCell" customModule="MovieService" customModuleProvider="target">
@@ -87,18 +87,9 @@
                                                             <nil key="textColor"/>
                                                             <color key="highlightedColor" white="0.33333333329999998" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                         </label>
-                                                        <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="9zO-un-kvW">
-                                                            <rect key="frame" x="10" y="-51" width="95" height="140"/>
-                                                            <constraints>
-                                                                <constraint firstAttribute="height" constant="140" id="Qhm-uw-5x9"/>
-                                                                <constraint firstAttribute="width" constant="95" id="fBF-lC-gbn"/>
-                                                            </constraints>
-                                                        </imageView>
                                                     </subviews>
                                                     <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                     <constraints>
-                                                        <constraint firstAttribute="bottom" secondItem="9zO-un-kvW" secondAttribute="bottom" constant="11" id="1Mj-kt-vxB"/>
-                                                        <constraint firstItem="9zO-un-kvW" firstAttribute="leading" secondItem="dLg-ol-Wtr" secondAttribute="leading" constant="10" id="DXp-Qo-fRf"/>
                                                         <constraint firstAttribute="height" constant="100" id="Kem-eX-Ss7"/>
                                                     </constraints>
                                                 </view>
@@ -116,6 +107,13 @@
                                                         </userDefinedRuntimeAttribute>
                                                     </userDefinedRuntimeAttributes>
                                                 </label>
+                                                <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="9zO-un-kvW">
+                                                    <rect key="frame" x="12" y="179" width="95" height="140"/>
+                                                    <constraints>
+                                                        <constraint firstAttribute="height" constant="140" id="Qhm-uw-5x9"/>
+                                                        <constraint firstAttribute="width" constant="95" id="fBF-lC-gbn"/>
+                                                    </constraints>
+                                                </imageView>
                                             </subviews>
                                             <constraints>
                                                 <constraint firstItem="dLg-ol-Wtr" firstAttribute="leading" secondItem="jKk-NU-nAj" secondAttribute="leading" id="0Z7-te-3Eb"/>
@@ -128,6 +126,8 @@
                                                 <constraint firstItem="dLg-ol-Wtr" firstAttribute="top" secondItem="awq-n3-CpB" secondAttribute="bottom" id="TZz-TB-wT5"/>
                                                 <constraint firstAttribute="trailing" secondItem="awq-n3-CpB" secondAttribute="trailing" id="alr-iJ-N94"/>
                                                 <constraint firstItem="bLV-0H-7q8" firstAttribute="top" secondItem="jKk-NU-nAj" secondAttribute="top" id="bFl-GM-jBs"/>
+                                                <constraint firstAttribute="bottom" secondItem="9zO-un-kvW" secondAttribute="bottom" constant="12" id="cpn-YP-vzi"/>
+                                                <constraint firstItem="9zO-un-kvW" firstAttribute="leading" secondItem="jKk-NU-nAj" secondAttribute="leading" constant="12" id="kuu-oC-YXb"/>
                                                 <constraint firstAttribute="bottom" secondItem="dLg-ol-Wtr" secondAttribute="bottom" id="o5k-i9-Uwt"/>
                                             </constraints>
                                         </tableViewCellContentView>
@@ -165,12 +165,13 @@
                     </view>
                     <navigationItem key="navigationItem" id="FzV-ws-f4U"/>
                     <connections>
+                        <outlet property="datePicker" destination="8P8-jp-XR5" id="UPG-8l-MW7"/>
                         <outlet property="table" destination="NDK-Sx-Aie" id="hhA-oW-8z8"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="776.81159420289862" y="70.982142857142847"/>
+            <point key="canvasLocation" x="1686.9565217391305" y="70.982142857142847"/>
         </scene>
         <!--Date Picker View Controller-->
         <scene sceneID="V0X-vj-wEH">
@@ -281,7 +282,23 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="y5b-ax-Wcn" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="416" y="846"/>
+            <point key="canvasLocation" x="-481" y="904"/>
+        </scene>
+        <!--Map-->
+        <scene sceneID="alI-h8-aH6">
+            <objects>
+                <viewController id="vlg-jK-yWG" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="KzC-tf-qlD">
+                        <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <viewLayoutGuide key="safeArea" id="60W-bt-6Ay"/>
+                        <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                    </view>
+                    <tabBarItem key="tabBarItem" title="Map" image="map" catalog="system" id="CtF-OE-85J"/>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="MB7-si-6zp" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="939" y="804"/>
         </scene>
         <!--Detail View Controller-->
         <scene sceneID="N6G-xn-f4r">
@@ -292,7 +309,7 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <wkWebView contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="l5f-ya-dCe">
-                                <rect key="frame" x="0.0" y="88" width="414" height="774"/>
+                                <rect key="frame" x="0.0" y="88" width="414" height="725"/>
                                 <color key="backgroundColor" red="0.36078431370000003" green="0.38823529410000002" blue="0.4039215686" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 <wkWebViewConfiguration key="configuration">
                                     <audiovisualMediaTypes key="mediaTypesRequiringUserActionForPlayback" none="YES"/>
@@ -316,12 +333,13 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="MU6-yX-JrU" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1524.6376811594205" y="-52.232142857142854"/>
+            <point key="canvasLocation" x="2434.7826086956525" y="-52.232142857142854"/>
         </scene>
-        <!--Navigation Controller-->
+        <!--Main-->
         <scene sceneID="88o-tw-LeS">
             <objects>
                 <navigationController automaticallyAdjustsScrollViewInsets="NO" id="jKT-cG-y1I" sceneMemberID="viewController">
+                    <tabBarItem key="tabBarItem" title="Main" image="ticket" catalog="system" id="9Sa-cd-Mxx"/>
                     <toolbarItems/>
                     <navigationBar key="navigationBar" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" id="EK8-Lc-VQO">
                         <rect key="frame" x="0.0" y="44" width="414" height="44"/>
@@ -334,10 +352,31 @@
                 </navigationController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="GUa-Mu-Qf4" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
+            <point key="canvasLocation" x="939.13043478260875" y="88.392857142857139"/>
+        </scene>
+        <!--Tab Bar Controller-->
+        <scene sceneID="K1L-8o-eTu">
+            <objects>
+                <tabBarController automaticallyAdjustsScrollViewInsets="NO" id="UBn-yX-6p8" sceneMemberID="viewController">
+                    <toolbarItems/>
+                    <tabBar key="tabBar" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" id="pvG-OL-cOW">
+                        <rect key="frame" x="0.0" y="0.0" width="1000" height="1000"/>
+                        <autoresizingMask key="autoresizingMask"/>
+                        <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                    </tabBar>
+                    <connections>
+                        <segue destination="jKT-cG-y1I" kind="relationship" relationship="viewControllers" id="a2v-I0-phJ"/>
+                        <segue destination="vlg-jK-yWG" kind="relationship" relationship="viewControllers" id="CgT-Fg-pTc"/>
+                    </connections>
+                </tabBarController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="ng3-GM-Y5I" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+            </objects>
             <point key="canvasLocation" x="28.985507246376812" y="88.392857142857139"/>
         </scene>
     </scenes>
     <resources>
+        <image name="map" catalog="system" width="128" height="110"/>
+        <image name="ticket" catalog="system" width="128" height="84"/>
         <systemColor name="labelColor">
             <color white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
         </systemColor>

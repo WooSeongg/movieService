@@ -6,11 +6,11 @@
 //
 
 import UIKit
-var name = ["aaa","bbb","ccc","eee"]
 
 class ViewController: UIViewController, UITableViewDelegate , UITableViewDataSource {
     
     @IBOutlet weak var table: UITableView!
+    @IBOutlet weak var datePicker: UIDatePicker!
     
     var movieURL = "https://kobis.or.kr/kobisopenapi/webservice/rest/boxoffice/searchDailyBoxOfficeList.json?key=87741d73ccc1be83b6769245ea6e0aa1&targetDt="
     var movieData : MovieData?
@@ -29,10 +29,13 @@ class ViewController: UIViewController, UITableViewDelegate , UITableViewDataSou
     }
     
     let naverMovieURL = "https://openapi.naver.com/v1/search/movie.json?query="
-    var naverMovieData: [NaverMovieData?] = []
+    var naverMovieData: [NaverData?] = []
+    
+    let naverImgURL = "https://openapi.naver.com/v1/search/image?query="
+    var naverImgData :[NaverData?] = []
     
     
-    struct NaverMovieData : Codable {
+    struct NaverData : Codable {
         let items : [items]
     }
     
@@ -40,23 +43,16 @@ class ViewController: UIViewController, UITableViewDelegate , UITableViewDataSou
         let image : String?
         let title : String?
         let link : String
-        let a : String?
-        //let userRating : Int
-        enum name:String, CodingKey {
-            case image = "image"
-            case title = "title"
-            case link = "link"
-            //case a = "a"
-        }
+//        //let userRating : Int
+//        enum name:String, CodingKey {
+//            case image = "image"
+//            case title = "title"
+//            case link = "link"
+//            //case a = "a"
+//        }
     }
     
-    let naverImgURL = "https://openapi.naver.com/v1/search/image?query="
-    var naverImgData :[NaverImgData?] = []
-    
-    struct NaverImgData: Codable{
-        let items : [items]
-    }
-    
+   
     
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
@@ -138,16 +134,13 @@ class ViewController: UIViewController, UITableViewDelegate , UITableViewDataSou
                         let posterImage = UIImage(data:data!)
                         cell.posterImg.image = posterImage
                         ImageCacheManager.shared.setObject(posterImage!, forKey: posterCacheKey)//네트워크로 불러온 이미지 캐싱
-                        //cell.mainImg.image =
-                        //cell.mainImg.image = UIImage(named: ss+"-1")
                     }
                 }
             }
             
-            print("yes Img")
         }else{
             cell.posterImg.image = UIImage(named: "NoImg")
-            print("no Img")
+            
         }
         
         if let mainUrlString = movieMainImgURL{
@@ -168,10 +161,9 @@ class ViewController: UIViewController, UITableViewDelegate , UITableViewDataSou
                             ImageCacheManager.shared.setObject(mainImage!, forKey: mainCacheKey)//네트워크로 불러온 이미지 캐싱
                         }
                     }catch{
-                        print("Data Error@")
+                        print("Data Error")
                         print(error)
                     }
-                    
                 }
             }
 
@@ -192,7 +184,9 @@ class ViewController: UIViewController, UITableViewDelegate , UITableViewDataSou
     }
     
     func getData(date:String){
+        
         guard let url = URL(string: movieURL+date)else {return}
+        
         let session = URLSession(configuration: .default)
         let task = session.dataTask(with: url) { (data, response, error) in
             if error != nil{
@@ -200,25 +194,23 @@ class ViewController: UIViewController, UITableViewDelegate , UITableViewDataSou
                 return
             }
             guard let JSONdata = data else { return }
-            //print(JSONdata)
-            //print(response!)
-            //let dataString = String(data: JSONdata, encoding: .utf8)
-            //print(dataString!)
             let decoder = JSONDecoder() //JSON데이터를 디코드하기 위해 JOSNDecoder객체생성
             do {
                 let decodedData = try decoder.decode(MovieData.self, from: JSONdata) //.self:String.metatype임을 명시
                 
+                //박스오피스 목록
                 self.movieData = decodedData
+                //이미지데이터 초기화
                 self.naverImgData = Array()
                 self.naverMovieData = Array()
+                
                 for (arr) in decodedData.boxOfficeResult.dailyBoxOfficeList{
                     DispatchQueue.global().sync{
-                        self.getNaverMovieData(sstring: self.naverMovieURL+arr.movieNm, index: 1)
-                        //self.getNaverMovieData(sstring: self.naverImgURL+arr.movieNm+"스틸컷&filter=large", index: 2)
-                        self.getNaverImgData(movieName: arr.movieNm, index: 2)
+                        self.getNaverMovieData(stringURL: self.naverMovieURL+arr.movieNm)
+                        self.getNaverImgData(movieName: arr.movieNm)
                     }
                 }
-                    
+
                 DispatchQueue.main.async {
                     self.table.reloadData()
                 }
@@ -227,18 +219,20 @@ class ViewController: UIViewController, UITableViewDelegate , UITableViewDataSou
                 print("MovieData Error")
                 print(error)
             }
-            
         }
         task.resume()
-        
     }
     
-    func getNaverMovieData(sstring:String, index:Int){
-        let urlString = sstring.addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed)!
-        //let urlString = (naverMovieURL+movieName).addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed)!
+    //포스터 이미지 불러오기
+    func getNaverMovieData(stringURL:String){
+        
         let semaphore = DispatchSemaphore(value: 0)
-        guard let url = URL(string: urlString)else {return}
+        
+        //let year = "&yearfrom="+String(datePicker.date.get(.year)-3)+"&yearto="+String(datePicker.date.get(.year))
+        let urlString = stringURL.addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed)!
+        guard let url = URL(string: urlString) else {return}
         var request = URLRequest(url:url)
+        //헤더에 개인키 추가
         request.addValue("VpUcm2Ecojr_b1juJZ64", forHTTPHeaderField: "X-Naver-Client-Id")
         request.addValue("dAtQLI07Pa", forHTTPHeaderField: "X-Naver-Client-Secret")
         
@@ -249,29 +243,24 @@ class ViewController: UIViewController, UITableViewDelegate , UITableViewDataSou
                 return
             }
             guard let JSONdata = data else { return }
-            //print(JSONdata)
-            //print(response!)
-            //let dataString = String(data: JSONdata, encoding: .utf8)
-            //print(dataString!)
             let decoder = JSONDecoder() //JSON데이터를 디코드하기 위해 JOSNDecoder객체생성
             
             do {
-                let decodedData = try decoder.decode(NaverMovieData.self, from: JSONdata) //.self:String.metatype임을 명시
+                let decodedData = try decoder.decode(NaverData.self, from: JSONdata) //.self:String.metatype임을 명시
                 
-                    self.naverMovieData.append(decodedData)
-//                }else if(index == 2){
-//                    self.naverImgData.append(decodedData)
-//                }
-                
+                self.naverMovieData.append(decodedData)
 
-                semaphore.signal() //통신이 완료되어 다음 일을 진행할 수 있도록 열어둠
+                //다음 작업이 진행되도록 sync로 지정된 getNaverMovieData() 종료함
+                //dataTask()는 백그라운드큐에서 동작하기 때문에 계속 진행됨
+                semaphore.signal()
+                
                 
                 DispatchQueue.main.async {
                     self.table.reloadData()
                 }
                 
             }catch {
-                print("naverMovieError")
+                print("naverMovieData Error")
                 print(error)
             }
         }
@@ -279,13 +268,18 @@ class ViewController: UIViewController, UITableViewDelegate , UITableViewDataSou
         semaphore.wait() //task가 종료될 때 까지 대기
     }
     
-    func getNaverImgData(movieName:String, index:Int){
-        let urlString = (naverImgURL+movieName+"스틸컷&display=1&filter=large").addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed)!
+    //배경메인 이미지 불러오기
+    func getNaverImgData(movieName:String){
+        
         let semaphore = DispatchSemaphore(value: 0)
+        
+        let urlString = (naverImgURL+movieName+"&display=1&filter=large").addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed)!
         guard let url = URL(string: urlString)else {return}
         var request = URLRequest(url:url)
+        //헤더에 개인키 추가
         request.addValue("VpUcm2Ecojr_b1juJZ64", forHTTPHeaderField: "X-Naver-Client-Id")
         request.addValue("dAtQLI07Pa", forHTTPHeaderField: "X-Naver-Client-Secret")
+        
         let session = URLSession(configuration: .default)
         let task = session.dataTask(with: request){ (data, response, error) in
             if error != nil{
@@ -296,17 +290,19 @@ class ViewController: UIViewController, UITableViewDelegate , UITableViewDataSou
             let decoder = JSONDecoder()
             
             do{
-                let decodedData = try decoder.decode(NaverImgData.self, from: JSONdata) //.self:String.metatype임을 명시
+                let decodedData = try decoder.decode(NaverData.self, from: JSONdata) //.self:String.metatype임을 명시
 
                 self.naverImgData.append(decodedData)
 
-                semaphore.signal() //통신이 완료되어 다음 일을 진행할 수 있도록 열어둠
+                //다음 작업이 진행되도록 sync로 지정된 getNaverImgData() 종료
+                //dataTask()는 백그라운드큐에서 동작하기 때문에 계속 진행됨
+                semaphore.signal()
                 
                 DispatchQueue.main.async {
                     self.table.reloadData()
                 }
             } catch{
-                print("naverImgError")
+                print("naverImgData Error")
                 print(error)
             }
         }
@@ -314,15 +310,18 @@ class ViewController: UIViewController, UITableViewDelegate , UITableViewDataSou
         semaphore.wait() //task가 종료될 때 까지 대기
     }
     
+    //
     func makeYesterdayString() -> String {
         let y = Calendar.current.date(byAdding: .day, value: -1, to: Date())!
         let dateF = DateFormatter()
         dateF.dateFormat = "yyyMMdd"
         let day = dateF.string(from:y)
+        print("day:\(day)")
         return day
     }
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        
         guard let dest = segue.destination as? DetailViewController else {return}
         let myIndexPath = table.indexPathForSelectedRow!
         let row = myIndexPath.row
@@ -335,9 +334,14 @@ class ViewController: UIViewController, UITableViewDelegate , UITableViewDataSou
         table.delegate  = self
         table.dataSource = self
         
+        //영진위API최대 검색 가능 날짜로 Date 생성
+        let minimumDateComponents = DateComponents(year: 2005, month:1, day:1)
+        let minimumDate = Calendar.current.date(from: minimumDateComponents)
+        datePicker.minimumDate = minimumDate
+        datePicker.maximumDate = Date()//당일 까지만 선택가능
+        
         let yesterday = makeYesterdayString()
         self.getData(date:yesterday)
-        
     }
     
     class ImageCacheManager {
@@ -348,13 +352,16 @@ class ViewController: UIViewController, UITableViewDelegate , UITableViewDataSou
     }
 
     @IBAction func ChnagingDate(_ sender: UIDatePicker) {
+        
         let pickedDate = sender.date
         let today = DateFormatter()
         today.dateFormat = "yyyyMMdd"
         let resultDate = today.string(from: pickedDate)
 
         self.getData(date:resultDate)
+        
     }
     
 }
+
 
