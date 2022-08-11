@@ -89,7 +89,7 @@ class ViewController: UIViewController, UITableViewDelegate , UITableViewDataSou
         
         let movieName = movieData?.boxOfficeResult.dailyBoxOfficeList[indexPath.row].movieNm
         cell.movieName.text = movieName
-        //cell.movieDate.text = movieData?.boxOfficeResult.dailyBoxOfficeList[indexPath.row].audiCnt
+        
         let numberFormatter = NumberFormatter()
         numberFormatter.numberStyle = .decimal
         
@@ -120,9 +120,8 @@ class ViewController: UIViewController, UITableViewDelegate , UITableViewDataSou
         cell.bottomView.layer.borderWidth = 0.5
         
         if let posterUrlString = moviePosterImgURL{
-            //cell.posterImg.image = UIImage(named: ss) //프로젝트 이미지 사용
-            let posterCacheKey = NSString(string:posterUrlString)
 
+            let posterCacheKey = NSString(string:posterUrlString)
             let posterUrl = URL(string:posterUrlString)
 
             if let cacahePosterImage = ImageCacheManager.shared.object(forKey: posterCacheKey){//저장된 이미지가 있다면
