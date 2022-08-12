@@ -17,24 +17,33 @@
                         <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <datePicker contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" datePickerMode="date" translatesAutoresizingMaskIntoConstraints="NO" id="8P8-jp-XR5">
-                                <rect key="frame" x="0.0" y="88" width="414" height="45"/>
-                                <constraints>
-                                    <constraint firstAttribute="height" constant="45" id="ALD-nW-BH7"/>
-                                </constraints>
-                                <date key="minimumDate" timeIntervalSinceReferenceDate="90241200">
-                                    <!--2003-11-11 11:00:00 +0000-->
-                                </date>
-                                <connections>
-                                    <action selector="ChnagingDate:" destination="BYZ-38-t0r" eventType="valueChanged" id="zS0-Sz-D1m"/>
-                                </connections>
-                            </datePicker>
                             <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="none" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="NDK-Sx-Aie">
-                                <rect key="frame" x="0.0" y="133" width="414" height="680"/>
+                                <rect key="frame" x="0.0" y="88" width="414" height="725"/>
                                 <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                                <view key="tableHeaderView" contentMode="scaleToFill" id="ud6-g9-w1K" userLabel="headerView">
+                                    <rect key="frame" x="0.0" y="0.0" width="414" height="44"/>
+                                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                    <subviews>
+                                        <datePicker contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" datePickerMode="date" translatesAutoresizingMaskIntoConstraints="NO" id="8P8-jp-XR5">
+                                            <rect key="frame" x="0.0" y="0.0" width="414" height="45"/>
+                                            <constraints>
+                                                <constraint firstAttribute="height" constant="45" id="ALD-nW-BH7"/>
+                                            </constraints>
+                                            <connections>
+                                                <action selector="ChnagingDate:" destination="BYZ-38-t0r" eventType="valueChanged" id="zS0-Sz-D1m"/>
+                                            </connections>
+                                        </datePicker>
+                                    </subviews>
+                                    <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                                    <constraints>
+                                        <constraint firstAttribute="trailing" secondItem="8P8-jp-XR5" secondAttribute="trailing" id="gmT-h3-jXV"/>
+                                        <constraint firstItem="8P8-jp-XR5" firstAttribute="top" secondItem="ud6-g9-w1K" secondAttribute="top" id="m5I-GU-HFj"/>
+                                        <constraint firstItem="8P8-jp-XR5" firstAttribute="leading" secondItem="ud6-g9-w1K" secondAttribute="leading" id="uE5-QN-EQF"/>
+                                    </constraints>
+                                </view>
                                 <prototypes>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" reuseIdentifier="myCell" rowHeight="331" id="f84-nm-Jt7" customClass="MyTableViewCell" customModule="MovieService" customModuleProvider="target">
-                                        <rect key="frame" x="0.0" y="44.5" width="414" height="331"/>
+                                        <rect key="frame" x="0.0" y="88.5" width="414" height="331"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="f84-nm-Jt7" id="jKk-NU-nAj">
                                             <rect key="frame" x="0.0" y="0.0" width="414" height="331"/>
@@ -155,18 +164,19 @@
                         <viewLayoutGuide key="safeArea" id="6Tk-OE-BBY"/>
                         <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                         <constraints>
-                            <constraint firstItem="8P8-jp-XR5" firstAttribute="trailing" secondItem="6Tk-OE-BBY" secondAttribute="trailing" id="6u6-ci-hX4"/>
+                            <constraint firstItem="NDK-Sx-Aie" firstAttribute="leading" secondItem="6Tk-OE-BBY" secondAttribute="leading" id="HM7-Yi-7gD"/>
                             <constraint firstItem="NDK-Sx-Aie" firstAttribute="bottom" secondItem="6Tk-OE-BBY" secondAttribute="bottom" id="KJ0-g6-f2f"/>
+                            <constraint firstItem="NDK-Sx-Aie" firstAttribute="top" secondItem="6Tk-OE-BBY" secondAttribute="top" id="ZE6-Qn-YbH"/>
+                            <constraint firstItem="NDK-Sx-Aie" firstAttribute="trailing" secondItem="6Tk-OE-BBY" secondAttribute="trailing" id="dPI-s5-Igb"/>
                             <constraint firstItem="NDK-Sx-Aie" firstAttribute="leading" secondItem="6Tk-OE-BBY" secondAttribute="leading" id="fqM-CM-Eq4"/>
-                            <constraint firstItem="8P8-jp-XR5" firstAttribute="leading" secondItem="6Tk-OE-BBY" secondAttribute="leading" id="ixz-nv-5sH"/>
-                            <constraint firstItem="NDK-Sx-Aie" firstAttribute="top" secondItem="8P8-jp-XR5" secondAttribute="bottom" id="lJ6-kp-7nq"/>
-                            <constraint firstItem="8P8-jp-XR5" firstAttribute="top" secondItem="6Tk-OE-BBY" secondAttribute="top" id="nbh-xL-LuD"/>
+                            <constraint firstItem="NDK-Sx-Aie" firstAttribute="bottom" secondItem="6Tk-OE-BBY" secondAttribute="bottom" id="vrn-Ab-Unx"/>
                             <constraint firstItem="NDK-Sx-Aie" firstAttribute="centerX" secondItem="8bC-Xf-vdC" secondAttribute="centerX" id="ywg-4b-YWu"/>
                         </constraints>
                     </view>
                     <navigationItem key="navigationItem" id="FzV-ws-f4U"/>
                     <connections>
                         <outlet property="datePicker" destination="8P8-jp-XR5" id="UPG-8l-MW7"/>
+                        <outlet property="header" destination="ud6-g9-w1K" id="TWC-hk-UlL"/>
                         <outlet property="table" destination="NDK-Sx-Aie" id="hhA-oW-8z8"/>
                     </connections>
                 </viewController>

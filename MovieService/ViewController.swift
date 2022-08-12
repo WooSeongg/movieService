@@ -11,6 +11,9 @@ class ViewController: UIViewController, UITableViewDelegate , UITableViewDataSou
     
     @IBOutlet weak var table: UITableView!
     @IBOutlet weak var datePicker: UIDatePicker!
+    @IBOutlet weak var header: UIView!
+    
+    private var imgWorkItem: DispatchWorkItem?
     
     var movieURL = "https://kobis.or.kr/kobisopenapi/webservice/rest/boxoffice/searchDailyBoxOfficeList.json?key=87741d73ccc1be83b6769245ea6e0aa1&targetDt="
     var movieData : MovieData?
@@ -148,7 +151,6 @@ class ViewController: UIViewController, UITableViewDelegate , UITableViewDataSou
                 cell.mainImg.image = cacahemainImage
             }else{
                 DispatchQueue.global().async{
-
                     do{
                         let data = try Data(contentsOf: mainUrl!)
 
@@ -203,15 +205,19 @@ class ViewController: UIViewController, UITableViewDelegate , UITableViewDataSou
                 self.naverImgData = Array()
                 self.naverMovieData = Array()
                 
-                for (arr) in decodedData.boxOfficeResult.dailyBoxOfficeList{
-                    Serialqueue1.async{
-                        self.getNaverMovieData(stringURL: self.naverMovieURL+arr.movieNm ,openDt:arr.openDt)
-                    }
-                    Serialqueue2.async{
-                        self.getNaverImgData(movieName: arr.movieNm)
-                    }
+                self.imgWorkItem = DispatchWorkItem{
+                    for (arr) in decodedData.boxOfficeResult.dailyBoxOfficeList{
+                        Serialqueue1.async{
+                            self.getNaverMovieData(stringURL: self.naverMovieURL+arr.movieNm ,openDt:arr.openDt)
+                        }
+                        Serialqueue2.async{
+                            self.getNaverImgData(movieName: arr.movieNm)
+                        }
 
+                    }
                 }
+                DispatchQueue.global().async(execute:self.imgWorkItem!)
+                
                 
                 DispatchQueue.main.async{
                     self.table.reloadData()
@@ -269,6 +275,7 @@ class ViewController: UIViewController, UITableViewDelegate , UITableViewDataSou
                 if(self.movieData?.boxOfficeResult.dailyBoxOfficeList.count == self.naverMovieData.count){
                     DispatchQueue.main.async {
                         self.table.reloadData()
+                        self.view.isUserInteractionEnabled = true
                     }
                 }
                 
@@ -290,7 +297,7 @@ class ViewController: UIViewController, UITableViewDelegate , UITableViewDataSou
         
         let semaphore = DispatchSemaphore(value: 0)
         
-        let urlString = (naverImgURL+movieName+"영화&display=1&filter=large").addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed)!
+        let urlString = (naverImgURL+movieName+"스틸컷&display=1&filter=large").addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed)!
         guard let url = URL(string: urlString)else {return}
         var request = URLRequest(url:url)
         //헤더에 개인키 추가
@@ -319,6 +326,7 @@ class ViewController: UIViewController, UITableViewDelegate , UITableViewDataSou
                 if(self.movieData?.boxOfficeResult.dailyBoxOfficeList.count == self.naverImgData.count){
                     DispatchQueue.main.async {
                         self.table.reloadData()
+                        self.view.isUserInteractionEnabled = true
                     }
                 }
 //                DispatchQueue.main.async {
@@ -355,6 +363,8 @@ class ViewController: UIViewController, UITableViewDelegate , UITableViewDataSou
         super.viewDidLoad()
         table.delegate  = self
         table.dataSource = self
+        table.tableHeaderView = header
+        self.view.isUserInteractionEnabled = false
         
         //영진위API최대 검색 가능 날짜로 Date 생성
         let minimumDateComponents = DateComponents(year: 2005, month:1, day:1)
@@ -375,11 +385,16 @@ class ViewController: UIViewController, UITableViewDelegate , UITableViewDataSou
 
     @IBAction func ChnagingDate(_ sender: UIDatePicker) {
         
+        //데이터 로딩 전엔 터치 불가 - 데이터가 덮어 쓰이는 문제 방지
+        self.view.isUserInteractionEnabled = false
+        
         //박스오피스 목록 초기화
         self.movieData = nil
         //이미지데이터 초기화
         self.naverImgData = Array()
         self.naverMovieData = Array()
+        
+        imgWorkItem?.cancel()
         
         let pickedDate = sender.date
         let today = DateFormatter()
