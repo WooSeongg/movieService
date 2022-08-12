@@ -53,9 +53,6 @@ class ViewController: UIViewController, UITableViewDelegate , UITableViewDataSou
 //        }
     }
     
-   
-    
-    
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return 10
     }
@@ -197,6 +194,8 @@ class ViewController: UIViewController, UITableViewDelegate , UITableViewDataSou
             let decoder = JSONDecoder() //JSON데이터를 디코드하기 위해 JOSNDecoder객체생성
             do {
                 let decodedData = try decoder.decode(MovieData.self, from: JSONdata) //.self:String.metatype임을 명시
+                let Serialqueue1 = DispatchQueue(label:"queue1")
+                let Serialqueue2 = DispatchQueue(label:"queue2")
                 
                 //박스오피스 목록
                 self.movieData = decodedData
@@ -205,20 +204,25 @@ class ViewController: UIViewController, UITableViewDelegate , UITableViewDataSou
                 self.naverMovieData = Array()
                 
                 for (arr) in decodedData.boxOfficeResult.dailyBoxOfficeList{
-                    DispatchQueue.global().sync{
+                    Serialqueue1.async{
                         self.getNaverMovieData(stringURL: self.naverMovieURL+arr.movieNm ,openDt:arr.openDt)
+                    }
+                    Serialqueue2.async{
                         self.getNaverImgData(movieName: arr.movieNm)
                     }
-                }
 
-                DispatchQueue.main.async {
+                }
+                
+                DispatchQueue.main.async{
                     self.table.reloadData()
                 }
+                
                 
             }catch {
                 print("MovieData Error")
                 print(error)
             }
+            print("getData is End")
         }
         task.resume()
     }
@@ -261,9 +265,16 @@ class ViewController: UIViewController, UITableViewDelegate , UITableViewDataSou
                 semaphore.signal()
                 
                 
-                DispatchQueue.main.async {
-                    self.table.reloadData()
+                //모든 이미지가 다운로드 되었을 때 화면 새로고침
+                if(self.movieData?.boxOfficeResult.dailyBoxOfficeList.count == self.naverMovieData.count){
+                    DispatchQueue.main.async {
+                        self.table.reloadData()
+                    }
                 }
+                
+//                DispatchQueue.main.async {
+//                    self.table.reloadData()
+//                }
                 
             }catch {
                 print("naverMovieData Error")
@@ -304,9 +315,15 @@ class ViewController: UIViewController, UITableViewDelegate , UITableViewDataSou
                 //dataTask()는 백그라운드큐에서 동작하기 때문에 계속 진행됨
                 semaphore.signal()
                 
-                DispatchQueue.main.async {
-                    self.table.reloadData()
+                //모든 이미지가 다운로드 되었을 때 화면 새로고침
+                if(self.movieData?.boxOfficeResult.dailyBoxOfficeList.count == self.naverImgData.count){
+                    DispatchQueue.main.async {
+                        self.table.reloadData()
+                    }
                 }
+//                DispatchQueue.main.async {
+//                    self.table.reloadData()
+//                }
             } catch{
                 print("naverImgData Error")
                 print(error)
@@ -357,6 +374,12 @@ class ViewController: UIViewController, UITableViewDelegate , UITableViewDataSou
     }
 
     @IBAction func ChnagingDate(_ sender: UIDatePicker) {
+        
+        //박스오피스 목록 초기화
+        self.movieData = nil
+        //이미지데이터 초기화
+        self.naverImgData = Array()
+        self.naverMovieData = Array()
         
         let pickedDate = sender.date
         let today = DateFormatter()
