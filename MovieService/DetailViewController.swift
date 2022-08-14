@@ -16,6 +16,8 @@ class DetailViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        self.navigationItem.title = "View Detail"
+
         
         let urlKorString = "https://search.naver.com/search.naver?where=nexearch&sm=top_hty&fbm=1&ie=utf8&query="+movieName
         let urlString = urlKorString.addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed)!

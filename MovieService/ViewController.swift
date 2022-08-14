@@ -31,10 +31,11 @@ class ViewController: UIViewController, UITableViewDelegate , UITableViewDataSou
         let rank : String
         let openDt: String
     }
-    
+    //네이버영화 (포스터) 검색
     let naverMovieURL = "https://openapi.naver.com/v1/search/movie.json?query="
     var naverMovieData: [NaverData?] = []
     
+    //네이버이미지 (배경) 검색
     let naverImgURL = "https://openapi.naver.com/v1/search/image?query="
     var naverImgData :[NaverData?] = []
     
@@ -52,7 +53,6 @@ class ViewController: UIViewController, UITableViewDelegate , UITableViewDataSou
 //            case image = "image"
 //            case title = "title"
 //            case link = "link"
-//            //case a = "a"
 //        }
     }
     
@@ -93,31 +93,21 @@ class ViewController: UIViewController, UITableViewDelegate , UITableViewDataSou
         let numberFormatter = NumberFormatter()
         numberFormatter.numberStyle = .decimal
         
+        //총 관객 수
         if let audiAcc = movieData?.boxOfficeResult.dailyBoxOfficeList[indexPath.row].audiAcc{
             cell.audiAccumulate.text = numberFormatter.string(for: Int(audiAcc))
         }else{
             cell.audiAccumulate.text = "0"
         }
-                
+           
+        //일일관객 수
         if let audiCnt = movieData?.boxOfficeResult.dailyBoxOfficeList[indexPath.row].audiCnt{
             cell.movieDate.text = numberFormatter.string(for: Int(audiCnt))
         }else{
-            cell.audiAccumulate.text = "0"
+            cell.movieDate.text = "0"
         }
-
+        //순위표시
         cell.rank.text = String(indexPath.row + 1) + "위"
-        cell.rank.clipsToBounds = true
-        cell.rank.layer.cornerRadius = 15
-        //cell.layer.cornerRadius = 15
-        
-        cell.mainImg.layer.cornerRadius = 18
-        cell.mainImg.layer.maskedCorners = CACornerMask(arrayLiteral: .layerMinXMinYCorner, .layerMaxXMinYCorner)
-        cell.mainFilter.layer.cornerRadius = 18
-        cell.mainFilter.layer.maskedCorners = CACornerMask(arrayLiteral: .layerMinXMinYCorner, .layerMaxXMinYCorner)
-        cell.bottomView.layer.cornerRadius = 18
-        cell.bottomView.layer.maskedCorners = CACornerMask(arrayLiteral: .layerMaxXMaxYCorner, .layerMinXMaxYCorner)
-        cell.bottomView.layer.borderColor = UIColor.gray.cgColor
-        cell.bottomView.layer.borderWidth = 0.5
         
         if let posterUrlString = moviePosterImgURL{
 
@@ -140,6 +130,7 @@ class ViewController: UIViewController, UITableViewDelegate , UITableViewDataSou
             
         }else{
             cell.posterImg.image = UIImage(named: "NoImg")
+            print("no poster")
             
         }
         
@@ -361,7 +352,10 @@ class ViewController: UIViewController, UITableViewDelegate , UITableViewDataSou
         table.delegate  = self
         table.dataSource = self
         table.tableHeaderView = header
+        self.navigationItem.title = "Box Office"
+        //데이터 로드 전 터치 불가
         self.view.isUserInteractionEnabled = false
+        
         
         //영진위API최대 검색 가능 날짜로 Date 생성
         let minimumDateComponents = DateComponents(year: 2005, month:1, day:1)
@@ -385,6 +379,7 @@ class ViewController: UIViewController, UITableViewDelegate , UITableViewDataSou
         //데이터 로딩 전엔 터치 불가 - 데이터가 덮어 쓰이는 문제 방지
         self.view.isUserInteractionEnabled = false
         
+                
         //박스오피스 목록 초기화
         self.movieData = nil
         //이미지데이터 초기화
