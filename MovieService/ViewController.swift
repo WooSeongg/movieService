@@ -196,8 +196,7 @@ class ViewController: UIViewController, UITableViewDelegate , UITableViewDataSou
             let decoder = JSONDecoder() //JSON데이터를 디코드하기 위해 JOSNDecoder객체생성
             do {
                 let decodedData = try decoder.decode(MovieData.self, from: JSONdata) //.self:String.metatype임을 명시
-                let Serialqueue1 = DispatchQueue(label:"queue1")
-                let Serialqueue2 = DispatchQueue(label:"queue2")
+                let Serialqueue = DispatchQueue(label:"Serialqueue")
                 
                 //박스오피스 목록
                 self.movieData = decodedData
@@ -207,10 +206,8 @@ class ViewController: UIViewController, UITableViewDelegate , UITableViewDataSou
                 
                 self.imgWorkItem = DispatchWorkItem{
                     for (arr) in decodedData.boxOfficeResult.dailyBoxOfficeList{
-                        Serialqueue1.async{
+                        Serialqueue.async{
                             self.getNaverMovieData(stringURL: self.naverMovieURL+arr.movieNm ,openDt:arr.openDt)
-                        }
-                        Serialqueue2.async{
                             self.getNaverImgData(movieName: arr.movieNm)
                         }
 
