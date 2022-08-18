@@ -35,7 +35,7 @@
                                             </connections>
                                         </datePicker>
                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="날짜 선택" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="a11-rW-g5G">
-                                            <rect key="frame" x="10" y="7" width="101" height="30"/>
+                                            <rect key="frame" x="10" y="7" width="148" height="30"/>
                                             <fontDescription key="fontDescription" type="system" pointSize="20"/>
                                             <nil key="textColor"/>
                                             <nil key="highlightedColor"/>
@@ -46,7 +46,7 @@
                                         <constraint firstItem="a11-rW-g5G" firstAttribute="leading" secondItem="ud6-g9-w1K" secondAttribute="leading" constant="10" id="17G-cl-fFP"/>
                                         <constraint firstItem="8P8-jp-XR5" firstAttribute="top" secondItem="ud6-g9-w1K" secondAttribute="top" id="59V-ry-YwN"/>
                                         <constraint firstItem="a11-rW-g5G" firstAttribute="top" secondItem="ud6-g9-w1K" secondAttribute="top" constant="7" id="8Tb-OZ-GY0"/>
-                                        <constraint firstItem="8P8-jp-XR5" firstAttribute="leading" secondItem="a11-rW-g5G" secondAttribute="trailing" constant="57" id="ABE-Rw-Nrs"/>
+                                        <constraint firstItem="8P8-jp-XR5" firstAttribute="leading" secondItem="a11-rW-g5G" secondAttribute="trailing" constant="10" id="ABE-Rw-Nrs"/>
                                         <constraint firstAttribute="bottom" secondItem="a11-rW-g5G" secondAttribute="bottom" constant="7" id="EER-lL-NM7"/>
                                         <constraint firstAttribute="trailing" secondItem="8P8-jp-XR5" secondAttribute="trailing" id="gx3-Rg-h6k"/>
                                     </constraints>

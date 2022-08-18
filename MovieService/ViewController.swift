@@ -47,7 +47,7 @@ class ViewController: UIViewController, UITableViewDelegate , UITableViewDataSou
     struct items : Codable {
         let image : String?
         let title : String?
-        let link : String
+        let link : String?
 //        //let userRating : Int
 //        enum name:String, CodingKey {
 //            case image = "image"
@@ -259,7 +259,25 @@ class ViewController: UIViewController, UITableViewDelegate , UITableViewDataSou
                 semaphore.signal()
                 
                 
-                //모든 이미지가 다운로드 되었을 때 화면 새로고침
+                //이미지 캐싱
+                if decodedData.items.count > 0 { //이미지 링크를 불러왔을 때만 동작
+                    if let imageUrlString = decodedData.items[0].image{
+                        do{
+                            let imageUrl = URL(string: imageUrlString)
+                            let data = try Data(contentsOf: imageUrl!) //이미지 불러옴
+                            let posterImage = UIImage(data:data)
+                            let posterCacheKey = NSString(string:imageUrlString)
+                            ImageCacheManager.shared.setObject(posterImage!, forKey: posterCacheKey)//네트워크로 불러온 이미지 캐싱
+                            
+                        }
+                        catch{
+                            print(error)
+                        }
+                    }
+                }
+                
+                                
+                //모든 이미지 링크가 다운로드 되었을 때 화면 새로고침
                 if(self.movieData?.boxOfficeResult.dailyBoxOfficeList.count == self.naverMovieData.count){
                     DispatchQueue.main.async {
                         self.table.reloadData()
@@ -310,16 +328,32 @@ class ViewController: UIViewController, UITableViewDelegate , UITableViewDataSou
                 //dataTask()는 백그라운드큐에서 동작하기 때문에 계속 진행됨
                 semaphore.signal()
                 
-                //모든 이미지가 다운로드 되었을 때 화면 새로고침
+                //이미지 캐싱
+                if decodedData.items.count > 0 {//이미지 링크를 불러왔을 때만 동작
+                    if let imageUrlString = decodedData.items[0].link{
+                        do{
+                            let imageUrl = URL(string: imageUrlString)
+                            let data = try Data(contentsOf: imageUrl!)
+                            let mainImage = UIImage(data:data)
+                            let mainCacheKey = NSString(string:imageUrlString)
+                            ImageCacheManager.shared.setObject(mainImage!, forKey: mainCacheKey)//네트워크로 불러온 이미지 캐싱
+                            
+                        }
+                        catch{
+                            print(error)
+                        }
+                    }
+                    
+                }
+                
+                //모든 이미지링크가 다운로드 되었을 때 화면 새로고침
                 if(self.movieData?.boxOfficeResult.dailyBoxOfficeList.count == self.naverImgData.count){
                     DispatchQueue.main.async {
                         self.table.reloadData()
                         self.view.isUserInteractionEnabled = true
                     }
                 }
-//                DispatchQueue.main.async {
-//                    self.table.reloadData()
-//                }
+
             } catch{
                 print("naverImgData Error")
                 print(error)
