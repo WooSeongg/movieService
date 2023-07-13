@@ -9,9 +9,6 @@ import UIKit
 
 class MyTableViewCell: UITableViewCell {
     
-    
-    
-    
     @IBOutlet weak var mainFilter: UIView!
     @IBOutlet weak var bottomView: UIView!
     @IBOutlet weak var rank: UILabel!

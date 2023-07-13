@@ -69,7 +69,8 @@ class ViewController: UIViewController, UITableViewDelegate , UITableViewDataSou
         if(naverMovieData.count > indexPath.row){//서버에서 가져온 만큼의 이미지만 출력
             if (naverMovieData[indexPath.row]?.items[0].image == ""){
                 moviePosterImgURL = nil//없는 데이터는 nil이 아닌 빈문자열을 반환하기 때문
-            }else{
+            }
+            else{
                 moviePosterImgURL = naverMovieData[indexPath.row]?.items[0].image
             }
         }
@@ -79,10 +80,12 @@ class ViewController: UIViewController, UITableViewDelegate , UITableViewDataSou
             if let data = naverImgData[indexPath.row]?.items {
                 if(data.isEmpty){
                     movieMainImgURL = nil
-                }else{
+                }
+                else{
                     movieMainImgURL = naverImgData[indexPath.row]?.items[0].link
                 }
-            }else{
+            }
+            else{
                 movieMainImgURL = nil
             }
         }
@@ -96,14 +99,16 @@ class ViewController: UIViewController, UITableViewDelegate , UITableViewDataSou
         //총 관객 수
         if let audiAcc = movieData?.boxOfficeResult.dailyBoxOfficeList[indexPath.row].audiAcc{
             cell.audiAccumulate.text = numberFormatter.string(for: Int(audiAcc))
-        }else{
+        }
+        else{
             cell.audiAccumulate.text = "0"
         }
            
         //일일관객 수
         if let audiCnt = movieData?.boxOfficeResult.dailyBoxOfficeList[indexPath.row].audiCnt{
             cell.movieDate.text = numberFormatter.string(for: Int(audiCnt))
-        }else{
+        }
+        else{
             cell.movieDate.text = "0"
         }
         //순위표시
@@ -116,7 +121,8 @@ class ViewController: UIViewController, UITableViewDelegate , UITableViewDataSou
 
             if let cacahePosterImage = ImageCacheManager.shared.object(forKey: posterCacheKey){//저장된 이미지가 있다면
                 cell.posterImg.image = cacahePosterImage
-            }else{
+            }
+            else{
                 DispatchQueue.global().async{
                     let data = try? Data(contentsOf: posterUrl!)
 
@@ -128,10 +134,10 @@ class ViewController: UIViewController, UITableViewDelegate , UITableViewDataSou
                 }
             }
             
-        }else{
+        }
+        else{
             cell.posterImg.image = UIImage(named: "NoImg")
             print("no poster")
-            
         }
         
         if let mainUrlString = movieMainImgURL{
@@ -140,7 +146,8 @@ class ViewController: UIViewController, UITableViewDelegate , UITableViewDataSou
 
             if let cacahemainImage = ImageCacheManager.shared.object(forKey: mainCacheKey){//저장된 이미지가 있다면
                 cell.mainImg.image = cacahemainImage
-            }else{
+            }
+            else{
                 DispatchQueue.global().async{
                     do{
                         let data = try Data(contentsOf: mainUrl!)
@@ -150,14 +157,16 @@ class ViewController: UIViewController, UITableViewDelegate , UITableViewDataSou
                             cell.mainImg.image = mainImage
                             ImageCacheManager.shared.setObject(mainImage!, forKey: mainCacheKey)//네트워크로 불러온 이미지 캐싱
                         }
-                    }catch{
+                    }
+                    catch{
                         print("Data Error")
                         print(error)
                     }
                 }
             }
 
-        }else{
+        }
+        else{
             cell.mainImg.image = UIImage(named: "NoImg")
             print("no main")
         }
@@ -176,7 +185,6 @@ class ViewController: UIViewController, UITableViewDelegate , UITableViewDataSou
     func getData(date:String){
         
         guard let url = URL(string: movieURL+date)else {return}
-        
         let session = URLSession(configuration: .default)
         let task = session.dataTask(with: url) { (data, response, error) in
             if error != nil{
@@ -201,18 +209,15 @@ class ViewController: UIViewController, UITableViewDelegate , UITableViewDataSou
                             self.getNaverMovieData(stringURL: self.naverMovieURL+arr.movieNm ,openDt:arr.openDt)
                             self.getNaverImgData(movieName: arr.movieNm)
                         }
-
                     }
                 }
                 DispatchQueue.global().async(execute:self.imgWorkItem!)
                 
-                
                 DispatchQueue.main.async{
                     self.table.reloadData()
                 }
-                
-                
-            }catch {
+            }
+            catch {
                 print("MovieData Error")
                 print(error)
             }
@@ -289,7 +294,8 @@ class ViewController: UIViewController, UITableViewDelegate , UITableViewDataSou
 //                    self.table.reloadData()
 //                }
                 
-            }catch {
+            }
+            catch {
                 print("naverMovieData Error")
                 print(error)
             }
@@ -354,7 +360,8 @@ class ViewController: UIViewController, UITableViewDelegate , UITableViewDataSou
                     }
                 }
 
-            } catch{
+            }
+            catch{
                 print("naverImgData Error")
                 print(error)
             }
@@ -373,7 +380,6 @@ class ViewController: UIViewController, UITableViewDelegate , UITableViewDataSou
     }
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        
         guard let dest = segue.destination as? DetailViewController else {return}
         let myIndexPath = table.indexPathForSelectedRow!
         let row = myIndexPath.row
@@ -389,7 +395,6 @@ class ViewController: UIViewController, UITableViewDelegate , UITableViewDataSou
         self.navigationItem.title = "Box Office"
         //데이터 로드 전 터치 불가
         self.view.isUserInteractionEnabled = false
-        
         
         //영진위API최대 검색 가능 날짜로 Date 생성
         let minimumDateComponents = DateComponents(year: 2005, month:1, day:1)
@@ -412,7 +417,6 @@ class ViewController: UIViewController, UITableViewDelegate , UITableViewDataSou
         
         //데이터 로딩 전엔 터치 불가 - 데이터가 덮어 쓰이는 문제 방지
         self.view.isUserInteractionEnabled = false
-        
                 
         //박스오피스 목록 초기화
         self.movieData = nil
@@ -428,9 +432,7 @@ class ViewController: UIViewController, UITableViewDelegate , UITableViewDataSou
         let resultDate = today.string(from: pickedDate)
 
         self.getData(date:resultDate)
-        
     }
-    
 }
 
 extension Date{

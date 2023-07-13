@@ -17,7 +17,6 @@ class DetailViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         self.navigationItem.title = "View Detail"
-
         
         let urlKorString = "https://search.naver.com/search.naver?where=nexearch&sm=top_hty&fbm=1&ie=utf8&query="+movieName
         let urlString = urlKorString.addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed)!
@@ -30,18 +29,5 @@ class DetailViewController: UIViewController {
         let request = URLRequest(url:url)
         
         webView.load(request)
-        
     }
-    
-
-    /*
-    // MARK: - Navigation
-
-    // In a storyboard-based application, you will often want to do a little preparation before navigation
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        // Get the new view controller using segue.destination.
-        // Pass the selected object to the new view controller.
-    }
-    */
-
 }

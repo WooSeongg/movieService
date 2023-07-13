@@ -14,8 +14,6 @@
 		9A8282BD283DBCA1002A973A /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 9A8282BB283DBCA1002A973A /* Main.storyboard */; };
 		9A8282BF283DBCA2002A973A /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 9A8282BE283DBCA2002A973A /* Assets.xcassets */; };
 		9A8282C2283DBCA2002A973A /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 9A8282C0283DBCA2002A973A /* LaunchScreen.storyboard */; };
-		9A8282CD283DBCA2002A973A /* MovieCWSTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A8282CC283DBCA2002A973A /* MovieCWSTests.swift */; };
-		9A8282D8283DBCA2002A973A /* MovieCWSUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A8282D7283DBCA2002A973A /* MovieCWSUITests.swift */; };
 		9A8BE58628A39773000DEE92 /* NaverMapViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A8BE58528A39773000DEE92 /* NaverMapViewController.swift */; };
 		9AE6BB7B284613A700C8EEE6 /* DetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9AE6BB7A284613A700C8EEE6 /* DetailViewController.swift */; };
 /* End PBXBuildFile section */
@@ -48,11 +46,7 @@
 		9A8282C1283DBCA2002A973A /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		9A8282C3283DBCA2002A973A /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		9A8282C8283DBCA2002A973A /* MovieServiceTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = MovieServiceTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
-		9A8282CC283DBCA2002A973A /* MovieCWSTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MovieCWSTests.swift; sourceTree = "<group>"; };
-		9A8282CE283DBCA2002A973A /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		9A8282D3283DBCA2002A973A /* MovieServiceUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = MovieServiceUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
-		9A8282D7283DBCA2002A973A /* MovieCWSUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MovieCWSUITests.swift; sourceTree = "<group>"; };
-		9A8282D9283DBCA2002A973A /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		9A8BE58528A39773000DEE92 /* NaverMapViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NaverMapViewController.swift; sourceTree = "<group>"; };
 		9AE6BB7A284613A700C8EEE6 /* DetailViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetailViewController.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -86,8 +80,6 @@
 			isa = PBXGroup;
 			children = (
 				9A8282B4283DBCA1002A973A /* MovieService */,
-				9A8282CB283DBCA2002A973A /* MovieServiceTests */,
-				9A8282D6283DBCA2002A973A /* MovieServiceUITests */,
 				9A8282B3283DBCA1002A973A /* Products */,
 			);
 			sourceTree = "<group>";
@@ -117,24 +109,6 @@
 				9A8BE58528A39773000DEE92 /* NaverMapViewController.swift */,
 			);
 			path = MovieService;
-			sourceTree = "<group>";
-		};
-		9A8282CB283DBCA2002A973A /* MovieServiceTests */ = {
-			isa = PBXGroup;
-			children = (
-				9A8282CC283DBCA2002A973A /* MovieCWSTests.swift */,
-				9A8282CE283DBCA2002A973A /* Info.plist */,
-			);
-			path = MovieServiceTests;
-			sourceTree = "<group>";
-		};
-		9A8282D6283DBCA2002A973A /* MovieServiceUITests */ = {
-			isa = PBXGroup;
-			children = (
-				9A8282D7283DBCA2002A973A /* MovieCWSUITests.swift */,
-				9A8282D9283DBCA2002A973A /* Info.plist */,
-			);
-			path = MovieServiceUITests;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -280,7 +254,6 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				9A8282CD283DBCA2002A973A /* MovieCWSTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -288,7 +261,6 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				9A8282D8283DBCA2002A973A /* MovieCWSUITests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
