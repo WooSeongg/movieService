@@ -67,11 +67,11 @@ class ViewController: UIViewController, UITableViewDelegate , UITableViewDataSou
         var moviePosterImgURL:String? = nil
         var movieMainImgURL:String? = nil
         if(naverMovieData.count > indexPath.row){//서버에서 가져온 만큼의 이미지만 출력
-            if (naverMovieData[indexPath.row]?.items[0].image == ""){
+            if (naverMovieData[indexPath.row]?.items[0].link == ""){
                 moviePosterImgURL = nil//없는 데이터는 nil이 아닌 빈문자열을 반환하기 때문
             }
             else{
-                moviePosterImgURL = naverMovieData[indexPath.row]?.items[0].image
+                moviePosterImgURL = naverMovieData[indexPath.row]?.items[0].link
             }
         }
         
@@ -206,7 +206,7 @@ class ViewController: UIViewController, UITableViewDelegate , UITableViewDataSou
                 self.imgWorkItem = DispatchWorkItem{
                     for (arr) in decodedData.boxOfficeResult.dailyBoxOfficeList{
                         Serialqueue.async{
-                            self.getNaverMovieData(stringURL: self.naverMovieURL+arr.movieNm ,openDt:arr.openDt)
+                            self.getNaverMovieData(stringURL: self.naverImgURL+"영화 "+arr.movieNm+" 포스터" ,openDt:arr.openDt)
                             self.getNaverImgData(movieName: arr.movieNm)
                         }
                     }
@@ -231,14 +231,11 @@ class ViewController: UIViewController, UITableViewDelegate , UITableViewDataSou
         
         let semaphore = DispatchSemaphore(value: 0)
         
-        //영화 개봉년도
-        let openYear = openDt.prefix(4)
-        
         //네이버 영화검색 요청 url
         let urlString = stringURL.addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed)!
         
         //영화 목록은 제작년도를 기준으로 내림차순으로 검색되므로 openYear까지만 조건을 걸어도 원하는 영화를 찾을 수 있다
-        guard let url = URL(string: urlString+"&yearfrom=2005"+"&yearto="+openYear) else {return}
+        guard let url = URL(string: urlString) else {return}
         var request = URLRequest(url:url)
         
         //헤더에 개인키 추가
@@ -266,7 +263,7 @@ class ViewController: UIViewController, UITableViewDelegate , UITableViewDataSou
                 
                 //이미지 캐싱
                 if decodedData.items.count > 0 { //이미지 링크를 불러왔을 때만 동작
-                    if let imageUrlString = decodedData.items[0].image{
+                    if let imageUrlString = decodedData.items[0].link{
                         do{
                             let imageUrl = URL(string: imageUrlString)
                             let data = try Data(contentsOf: imageUrl!) //이미지 불러옴
@@ -289,11 +286,6 @@ class ViewController: UIViewController, UITableViewDelegate , UITableViewDataSou
                         self.view.isUserInteractionEnabled = true
                     }
                 }
-                
-//                DispatchQueue.main.async {
-//                    self.table.reloadData()
-//                }
-                
             }
             catch {
                 print("naverMovieData Error")
@@ -343,13 +335,11 @@ class ViewController: UIViewController, UITableViewDelegate , UITableViewDataSou
                             let mainImage = UIImage(data:data)
                             let mainCacheKey = NSString(string:imageUrlString)
                             ImageCacheManager.shared.setObject(mainImage!, forKey: mainCacheKey)//네트워크로 불러온 이미지 캐싱
-                            
                         }
                         catch{
                             print(error)
                         }
                     }
-                    
                 }
                 
                 //모든 이미지링크가 다운로드 되었을 때 화면 새로고침
@@ -359,7 +349,6 @@ class ViewController: UIViewController, UITableViewDelegate , UITableViewDataSou
                         self.view.isUserInteractionEnabled = true
                     }
                 }
-
             }
             catch{
                 print("naverImgData Error")
